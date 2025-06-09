@@ -1,4 +1,5 @@
 ﻿using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ namespace MornUtil
 
         private void Awake()
         {
-            _button.OnClickAsObservable().Subscribe(_ => MornWebUtil.Open(_url)).AddTo(this);
+            _button.OnSubmitAsObservable().Subscribe(_ => MornWebUtil.Open(_url)).AddTo(this);
         }
 
         private void Reset()
