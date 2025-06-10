@@ -2,7 +2,8 @@
     "name": "MornUtil.Editor",
     "rootNamespace": "MornUtil",
     "references": [
-        "MornUtil"
+        "MornUtil",
+        "Unity.Addressables.Editor"
     ],
     "includePlatforms": [
         "Editor"
