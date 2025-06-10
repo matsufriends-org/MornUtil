@@ -1,0 +1,18 @@
+{
+    "name": "MornUtil.Editor",
+    "rootNamespace": "MornUtil",
+    "references": [
+        "MornUtil"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
