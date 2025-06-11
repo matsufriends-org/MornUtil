@@ -5,7 +5,8 @@
         "MornUtil",
         "Unity.Addressables",
         "Unity.Addressables.Editor",
-        "Unity.2D.Psdimporter.Editor"
+        "Unity.2D.Psdimporter.Editor",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"
