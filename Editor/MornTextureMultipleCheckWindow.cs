@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace MornUtil
 {
-    public class MornTextureMultipleCheckWindow : EditorWindow
+    internal sealed class MornTextureMultipleCheckWindow : EditorWindow
     {
-        private class TextureInfo
+        private sealed class TextureInfo
         {
             public string AssetPath { get; set; }
             public Texture2D Texture { get; set; }

@@ -8,9 +8,9 @@ using Object = UnityEngine.Object;
 
 namespace MornUtil
 {
-    public class MornUnusedAssetSearchWindow : EditorWindow
+    internal sealed class MornUnusedAssetSearchWindow : EditorWindow
     {
-        private class UnusedAssetInfo
+        private sealed class UnusedAssetInfo
         {
             public string AssetPath { get; set; }
             public string AssetType { get; set; }

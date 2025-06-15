@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MornUtil
 {
-    public class MornSimpleImageGeneratorWindow : EditorWindow
+    internal sealed class MornSimpleImageGeneratorWindow : EditorWindow
     {
         private Color _fillColor = Color.white;
         private int _width = 512;

@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace MornUtil
 {
-    public class MornMissingReferenceSearchWindow : EditorWindow
+    internal sealed class MornMissingReferenceSearchWindow : EditorWindow
     {
-        private class MissingReferenceInfo
+        private sealed class MissingReferenceInfo
         {
             public string AssetPath { get; set; }
             public string ComponentName { get; set; }

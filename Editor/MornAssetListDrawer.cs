@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace MornUtil.Editor
+namespace MornUtil
 {
-    public static class MornAssetListDrawer
+    internal static class MornAssetListDrawer
     {
         public static void DrawAssetList<T>(
             List<T> assets,

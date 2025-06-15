@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-namespace MornUtil.Editor
+namespace MornUtil
 {
-    public class MornTMPFontCacheCleanerWindow : EditorWindow
+    internal sealed class MornTMPFontCacheCleanerWindow : EditorWindow
     {
         private Vector2 _scrollPosition;
         private List<TMP_FontAsset> _fontAssets = new List<TMP_FontAsset>();

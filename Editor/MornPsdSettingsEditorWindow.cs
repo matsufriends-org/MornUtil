@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEngine;
 using UnityEditor.U2D.PSD;
+using UnityEngine;
 
-namespace MornUtil.Editor
+namespace MornUtil
 {
-    public class MornPsdSettingsEditorWindow : EditorWindow
+    internal sealed class MornPsdSettingsEditorWindow : EditorWindow
     {
         private Vector2 _scrollPosition;
         private List<string> _psdPaths = new List<string>();

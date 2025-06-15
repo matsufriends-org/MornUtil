@@ -3,9 +3,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace MornUtil.Editor
+namespace MornUtil
 {
-    public class MornTextureSettingsEditorWindow : EditorWindow
+    internal sealed class MornTextureSettingsEditorWindow : EditorWindow
     {
         private Vector2 _scrollPosition;
         private List<Texture2D> _textures = new List<Texture2D>();
