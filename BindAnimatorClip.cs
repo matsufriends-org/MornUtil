@@ -11,7 +11,6 @@ namespace MornUtil
     {
         [SerializeField] private Animator _animator;
         [SerializeField] private string _clipName;
-        
         /// <summary>
         /// バインドされたAnimator
         /// </summary>
@@ -28,7 +27,6 @@ namespace MornUtil
                 }
             }
         }
-        
         /// <summary>
         /// 選択されたクリップ名
         /// </summary>
@@ -37,7 +35,6 @@ namespace MornUtil
             get => _clipName;
             set => _clipName = value;
         }
-        
         /// <summary>
         /// 選択されたAnimationClip
         /// </summary>
@@ -45,32 +42,35 @@ namespace MornUtil
         {
             get
             {
-                if (_animator?.runtimeAnimatorController == null || string.IsNullOrEmpty(_clipName))
+                if (_animator == null || _animator.runtimeAnimatorController == null || string.IsNullOrEmpty(_clipName))
+                {
                     return null;
-                    
+                }
+
                 var clips = _animator.runtimeAnimatorController.animationClips;
                 foreach (var clip in clips)
                 {
                     if (clip != null && clip.name == _clipName)
+                    {
                         return clip;
+                    }
                 }
-                
+
                 return null;
             }
         }
-        
         /// <summary>
         /// 有効なバインドかどうか
         /// </summary>
         public bool IsValid => Clip != null;
-        
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
         public BindAnimatorClip()
         {
         }
-        
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -79,7 +79,7 @@ namespace MornUtil
             _animator = animator;
             _clipName = clipName;
         }
-        
+
         /// <summary>
         /// 文字列表現
         /// </summary>
@@ -87,10 +87,8 @@ namespace MornUtil
         {
             if (_animator == null)
                 return "Animator: None";
-                
             if (string.IsNullOrEmpty(_clipName))
                 return $"Animator: {_animator.name}, Clip: None";
-                
             return $"Animator: {_animator.name}, Clip: {_clipName}";
         }
     }
