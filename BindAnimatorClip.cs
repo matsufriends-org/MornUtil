@@ -14,19 +14,7 @@ namespace MornUtil
         /// <summary>
         /// バインドされたAnimator
         /// </summary>
-        public Animator Animator
-        {
-            get => _animator;
-            set
-            {
-                if (_animator != value)
-                {
-                    _animator = value;
-                    // Animatorが変更されたらクリップ名をリセット
-                    _clipName = string.Empty;
-                }
-            }
-        }
+        public Animator Animator => _animator;
         /// <summary>
         /// 選択されたクリップ名
         /// </summary>
