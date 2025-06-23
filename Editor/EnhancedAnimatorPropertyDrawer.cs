@@ -8,7 +8,7 @@ namespace MornUtil.Editor
     /// Pingボタンを追加
     /// </summary>
     [CustomPropertyDrawer(typeof(Animator))]
-    public class EnhancedAnimatorPropertyDrawer : PropertyDrawer
+    internal class EnhancedAnimatorPropertyDrawer : PropertyDrawer
     {
         private const float PING_BUTTON_WIDTH = 50f;
         private const float SPACING = 2f;

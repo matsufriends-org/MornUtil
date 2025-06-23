@@ -9,7 +9,7 @@ namespace MornUtil.Editor
     /// <summary>
     /// Animator と AnimationClip を結合・分離するEditorWindow
     /// </summary>
-    public class AnimatorAnimationClipBinder : EditorWindow
+    internal class AnimatorAnimationClipBinder : EditorWindow
     {
         private RuntimeAnimatorController _targetController;
         private AnimationClip _clipToBind;

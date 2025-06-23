@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace MornUtil.Editor
@@ -7,7 +6,7 @@ namespace MornUtil.Editor
     /// <summary>
     /// MornUtil Editor設定
     /// </summary>
-    public static class MornUtilEditorPreferences
+    internal static class MornUtilEditorPreferences
     {
         private const string ENABLE_ANIMATOR_DRAWER_KEY = "MornUtil.EnableAnimatorDrawer";
         private const string SHOW_ANIMATOR_TOOLTIPS_KEY = "MornUtil.ShowAnimatorTooltips";

@@ -6,7 +6,7 @@ namespace MornUtil.Editor
     /// <summary>
     /// Animator/AnimationClipバインダーのコンテキストメニュー
     /// </summary>
-    public static class AnimatorAnimationClipBinderContextMenu
+    internal static class AnimatorAnimationClipBinderContextMenu
     {
         [MenuItem("CONTEXT/RuntimeAnimatorController/アニメーション結合ツールを開く")]
         private static void OpenClipBinderFromController(MenuCommand command)

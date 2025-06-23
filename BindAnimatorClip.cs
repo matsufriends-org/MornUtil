@@ -3,29 +3,12 @@ using UnityEngine;
 
 namespace MornUtil
 {
-    /// <summary>
-    /// AnimatorからAnimationClipを選択するためのバインドクラス
-    /// </summary>
     [Serializable]
     public class BindAnimatorClip
     {
         [SerializeField] private Animator _animator;
         [SerializeField] private string _clipName;
-        /// <summary>
-        /// バインドされたAnimator
-        /// </summary>
         public Animator Animator => _animator;
-        /// <summary>
-        /// 選択されたクリップ名
-        /// </summary>
-        public string ClipName
-        {
-            get => _clipName;
-            set => _clipName = value;
-        }
-        /// <summary>
-        /// 選択されたAnimationClip
-        /// </summary>
         public AnimationClip Clip
         {
             get
@@ -47,37 +30,44 @@ namespace MornUtil
                 return null;
             }
         }
-        /// <summary>
-        /// 有効なバインドかどうか
-        /// </summary>
         public bool IsValid => Clip != null;
 
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
         public BindAnimatorClip()
         {
         }
 
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
         public BindAnimatorClip(Animator animator, string clipName = "")
         {
             _animator = animator;
             _clipName = clipName;
         }
 
-        /// <summary>
-        /// 文字列表現
-        /// </summary>
-        public override string ToString()
+        public void Play(float transition = 0f)
         {
-            if (_animator == null)
-                return "Animator: None";
-            if (string.IsNullOrEmpty(_clipName))
-                return $"Animator: {_animator.name}, Clip: None";
-            return $"Animator: {_animator.name}, Clip: {_clipName}";
+            if (_animator == null || string.IsNullOrEmpty(_clipName))
+            {
+                return;
+            }
+
+            var clip = Clip;
+            if (clip != null)
+            {
+                _animator.MornPlay(clip, transition);
+            }
+        }
+
+        public void ApplyImmediate(float normalizedTime = 1f)
+        {
+            if (_animator == null || string.IsNullOrEmpty(_clipName))
+            {
+                return;
+            }
+
+            var clip = Clip;
+            if (clip != null)
+            {
+                _animator.MornApplyImmediate(clip, normalizedTime);
+            }
         }
     }
 }

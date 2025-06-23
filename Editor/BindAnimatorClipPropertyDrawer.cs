@@ -9,7 +9,7 @@ namespace MornUtil.Editor
     /// BindAnimatorClip用のCustomPropertyDrawer
     /// </summary>
     [CustomPropertyDrawer(typeof(BindAnimatorClip))]
-    public class BindAnimatorClipPropertyDrawer : PropertyDrawer
+    internal class BindAnimatorClipPropertyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
