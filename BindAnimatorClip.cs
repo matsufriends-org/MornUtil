@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace MornUtil
@@ -50,10 +52,28 @@ namespace MornUtil
             }
 
             var clip = Clip;
-            if (clip != null)
+            if (clip == null)
             {
-                _animator.MornPlay(clip, transition);
+                return;
             }
+
+            _animator.MornPlay(clip, transition);
+        }
+
+        public UniTask PlayAsync(float transition = 0f, CancellationToken ct = default)
+        {
+            if (_animator == null || string.IsNullOrEmpty(_clipName))
+            {
+                return UniTask.CompletedTask;
+            }
+
+            var clip = Clip;
+            if (clip == null)
+            {
+                return UniTask.CompletedTask;
+            }
+
+            return _animator.MornPlayAsync(clip, transition, ct);
         }
 
         public void ApplyImmediate(float normalizedTime = 1f)
