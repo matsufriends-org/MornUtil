@@ -57,6 +57,7 @@ namespace MornUtil
                 return;
             }
 
+            _animator.enabled = true;
             _animator.MornPlay(clip, transition);
         }
 
@@ -73,6 +74,7 @@ namespace MornUtil
                 return UniTask.CompletedTask;
             }
 
+            _animator.enabled = true;
             return _animator.MornPlayAsync(clip, transition, ct);
         }
 
@@ -86,6 +88,7 @@ namespace MornUtil
             var clip = Clip;
             if (clip != null)
             {
+                _animator.enabled = true;
                 _animator.MornApplyImmediate(clip, normalizedTime);
             }
         }
