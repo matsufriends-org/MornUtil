@@ -1,4 +1,4 @@
-using System;
+using MornEditor;
 using UnityEngine;
 
 namespace MornUtil
@@ -7,6 +7,8 @@ namespace MornUtil
     {
         [SerializeField] private SpriteRenderer _renderer;
         [SerializeField] private Sprite[] _sprites;
+        [SerializeField] private bool _isLoop = true;
+        [SerializeField, ShowIf(nameof(_isLoop))] private bool _isPingPong;
         [SerializeField] private float _duration = 0.2f;
         private int _nextIndex;
         private float _nextChangeTime;
@@ -23,10 +25,30 @@ namespace MornUtil
                 return;
             }
 
+            if (_isLoop == false && _nextIndex >= _sprites.Length)
+            {
+                return;
+            }
+
             if (Time.time >= _nextChangeTime)
             {
-                _renderer.sprite = _sprites[_nextIndex];
-                _nextIndex = (_nextIndex + 1) % _sprites.Length;
+                if (_isPingPong)
+                {
+                    var length = _sprites.Length;
+                    var pingPongIndex = _nextIndex % (2 * length - 2);
+                    if (pingPongIndex >= length)
+                    {
+                        pingPongIndex = 2 * length - 2 - pingPongIndex;
+                    }
+
+                    _renderer.sprite = _sprites[pingPongIndex];
+                }
+                else
+                {
+                    _renderer.sprite = _sprites[_nextIndex % _sprites.Length];
+                }
+
+                _nextIndex += 1;
                 _nextChangeTime = Time.time + _duration;
             }
         }
