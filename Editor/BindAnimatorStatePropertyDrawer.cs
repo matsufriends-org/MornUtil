@@ -7,17 +7,17 @@ using UnityEngine;
 namespace MornUtil.Editor
 {
     /// <summary>
-    /// BindAnimatorClip用のCustomPropertyDrawer
+    /// BindAnimatorState用のCustomPropertyDrawer
     /// </summary>
-    [CustomPropertyDrawer(typeof(BindAnimatorClip))]
-    internal class BindAnimatorClipPropertyDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(BindAnimatorState))]
+    internal class BindAnimatorStatePropertyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
             
             var animatorProp = property.FindPropertyRelative("_animator");
-            var clipNameProp = property.FindPropertyRelative("_clipName");
+            var stateNameProp = property.FindPropertyRelative("_stateName");
             
             // ラベルを描画
             var rect = EditorGUI.PrefixLabel(position, label);
@@ -26,9 +26,9 @@ namespace MornUtil.Editor
             var indent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
             
-            // Animatorとクリップを1行で表示
+            // AnimatorとStateを1行で表示
             var animatorWidth = rect.width * 0.5f;
-            var clipWidth = rect.width * 0.5f;
+            var stateWidth = rect.width * 0.5f;
             
             // Animatorフィールド
             var animatorRect = new Rect(rect.x, rect.y, animatorWidth, rect.height);
@@ -37,12 +37,12 @@ namespace MornUtil.Editor
             if (newAnimator != animatorProp.objectReferenceValue)
             {
                 animatorProp.objectReferenceValue = newAnimator;
-                clipNameProp.stringValue = string.Empty; // Animatorが変更されたらクリップ名をリセット
+                stateNameProp.stringValue = string.Empty; // Animatorが変更されたらState名をリセット
             }
             
-            // AnimationClip選択フィールド
-            var clipRect = new Rect(rect.x + animatorWidth, rect.y, clipWidth, rect.height);
-            DrawClipSelector(clipRect, animatorProp.objectReferenceValue as Animator, clipNameProp);
+            // State選択フィールド
+            var stateRect = new Rect(rect.x + animatorWidth, rect.y, stateWidth, rect.height);
+            DrawStateSelector(stateRect, animatorProp.objectReferenceValue as Animator, stateNameProp);
             
             // インデントを復元
             EditorGUI.indentLevel = indent;
@@ -50,7 +50,7 @@ namespace MornUtil.Editor
             EditorGUI.EndProperty();
         }
         
-        private void DrawClipSelector(Rect rect, Animator animator, SerializedProperty clipNameProp)
+        private void DrawStateSelector(Rect rect, Animator animator, SerializedProperty stateNameProp)
         {
             if (animator?.runtimeAnimatorController == null)
             {
@@ -60,84 +60,70 @@ namespace MornUtil.Editor
                 return;
             }
             
-            var clips = GetAnimationClips(animator);
-            if (clips.Count == 0)
+            var stateNames = GetStateNames(animator);
+            if (stateNames.Count == 0)
             {
                 EditorGUI.BeginDisabledGroup(true);
-                EditorGUI.Popup(rect, 0, new string[] { "クリップなし" });
+                EditorGUI.Popup(rect, 0, new string[] { "Stateなし" });
                 EditorGUI.EndDisabledGroup();
                 return;
             }
             
-            var clipNames = clips.Select(c => c?.name ?? "null").ToArray();
-            var currentClipName = clipNameProp.stringValue;
-            var currentIndex = System.Array.IndexOf(clipNames, currentClipName);
+            var currentStateName = stateNameProp.stringValue;
+            var currentIndex = stateNames.IndexOf(currentStateName);
             
             // 現在の選択が無効な場合は0にリセット
             if (currentIndex < 0)
             {
                 currentIndex = 0;
-                clipNameProp.stringValue = clipNames[0];
+                stateNameProp.stringValue = stateNames[0];
             }
             
-            var newIndex = EditorGUI.Popup(rect, currentIndex, clipNames);
-            if (newIndex != currentIndex && newIndex >= 0 && newIndex < clipNames.Length)
+            var newIndex = EditorGUI.Popup(rect, currentIndex, stateNames.ToArray());
+            if (newIndex != currentIndex && newIndex >= 0 && newIndex < stateNames.Count)
             {
-                clipNameProp.stringValue = clipNames[newIndex];
+                stateNameProp.stringValue = stateNames[newIndex];
             }
         }
         
-        private List<AnimationClip> GetAnimationClips(Animator animator)
+        private List<string> GetStateNames(Animator animator)
         {
-            var clips = new List<AnimationClip>();
+            var stateNames = new List<string>();
             
             if (animator?.runtimeAnimatorController == null)
-                return clips;
-                
-            // AnimatorControllerの場合、State名とClip名が一致するもののみを収集
+                return stateNames;
+
+            // エディタではAnimatorControllerからState名を取得
             if (animator.runtimeAnimatorController is AnimatorController controller)
             {
-                var stateNames = new HashSet<string>();
-                
-                // すべてのState名を収集
                 for (var i = 0; i < controller.layers.Length; i++)
                 {
                     CollectStateNames(controller.layers[i].stateMachine, stateNames);
                 }
-                
-                // State名と一致するClipのみを追加
-                var allClips = animator.runtimeAnimatorController.animationClips;
-                if (allClips != null)
-                {
-                    foreach (var clip in allClips)
-                    {
-                        if (clip != null && stateNames.Contains(clip.name))
-                        {
-                            clips.Add(clip);
-                        }
-                    }
-                }
             }
             else
             {
-                // AnimatorOverrideController等の場合はすべてのクリップを表示
+                // ランタイムまたはAnimatorOverrideControllerの場合はクリップ名をState名として使用
                 var allClips = animator.runtimeAnimatorController.animationClips;
                 if (allClips != null)
                 {
-                    var uniqueClips = allClips.Where(c => c != null).GroupBy(c => c.name).Select(g => g.First());
-                    clips.AddRange(uniqueClips);
+                    var uniqueNames = allClips.Where(c => c != null).Select(c => c.name).Distinct();
+                    stateNames.AddRange(uniqueNames);
                 }
             }
             
-            return clips.Distinct().OrderBy(c => c.name).ToList();
+            return stateNames.OrderBy(n => n).ToList();
         }
-        
-        private void CollectStateNames(AnimatorStateMachine stateMachine, HashSet<string> stateNames)
+
+        private void CollectStateNames(AnimatorStateMachine stateMachine, List<string> stateNames)
         {
             // ステート名を収集
             foreach (var state in stateMachine.states)
             {
-                stateNames.Add(state.state.name);
+                if (!stateNames.Contains(state.state.name))
+                {
+                    stateNames.Add(state.state.name);
+                }
             }
             
             // サブステートマシンを再帰的に処理
