@@ -18,6 +18,11 @@ namespace MornUtil
             _renderer = GetComponent<SpriteRenderer>();
         }
 
+        private void OnEnable()
+        {
+            UpdateIndex(0);
+        }
+
         private void Update()
         {
             if (_sprites == null || _sprites.Length == 0 || _renderer == null)
@@ -25,32 +30,37 @@ namespace MornUtil
                 return;
             }
 
-            if (_isLoop == false && _nextIndex >= _sprites.Length)
+            if (_isLoop == false && _nextIndex >= _sprites.Length - 1)
             {
                 return;
             }
 
             if (Time.time >= _nextChangeTime)
             {
-                if (_isPingPong)
-                {
-                    var length = _sprites.Length;
-                    var pingPongIndex = _nextIndex % (2 * length - 2);
-                    if (pingPongIndex >= length)
-                    {
-                        pingPongIndex = 2 * length - 2 - pingPongIndex;
-                    }
-
-                    _renderer.sprite = _sprites[pingPongIndex];
-                }
-                else
-                {
-                    _renderer.sprite = _sprites[_nextIndex % _sprites.Length];
-                }
-
-                _nextIndex += 1;
+                UpdateIndex(_nextIndex + 1);
                 _nextChangeTime = Time.time + _duration;
             }
+        }
+
+        private void UpdateIndex(int index)
+        {
+            if (_isPingPong)
+            {
+                var length = _sprites.Length;
+                var pingPongIndex = index % (2 * length - 2);
+                if (pingPongIndex >= length)
+                {
+                    pingPongIndex = 2 * length - 2 - pingPongIndex;
+                }
+
+                _renderer.sprite = _sprites[pingPongIndex];
+            }
+            else
+            {
+                _renderer.sprite = _sprites[index % _sprites.Length];
+            }
+
+            _nextIndex = index;
         }
     }
 }
